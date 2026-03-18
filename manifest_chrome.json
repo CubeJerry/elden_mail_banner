@@ -4,20 +4,21 @@
   "version": "1.1.2",
   "description": "Shows an Elden Ring banner when you send an email",
   "permissions": ["storage"],
-   "action": {
-      "default_popup": "popup.html",
-      "default_icon": {
-        "48": "assets/icon.png"
-      }
-   },
-    "host_permissions": [
-      "https://mail.google.com/*",
-      "https://outlook.office.com/*",
-      "https://outlook.live.com/*",
-      "https://outlook.office365.com/*",
-      "https://mail.proton.me/*",
-      "https://mail.aol.com/*"
-    ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "assets/icon.png"
+    }
+  },
+  "host_permissions": [
+    "https://mail.google.com/*",
+    "https://outlook.office.com/*",
+    "https://outlook.live.com/*",
+    "https://outlook.office365.com/*",
+    "https://outlook.cloud.microsoft/*",
+    "https://mail.proton.me/*",
+    "https://mail.aol.com/*"
+  ],
   "content_scripts": [
     {
       "matches": [
@@ -25,6 +26,7 @@
         "https://outlook.office.com/*",
         "https://outlook.live.com/*",
         "https://outlook.office365.com/*",
+        "https://outlook.cloud.microsoft/*",
         "https://mail.proton.me/*",
         "https://mail.aol.com/*"
       ],
@@ -38,16 +40,22 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["assets/email_sent_yellow.png", "assets/email_sent_blue.png", "assets/email_sent_red.png","assets/elden_ring_sound.mp3", "assets/Matinia.otf"],
+      "resources": [
+        "assets/email_sent_yellow.png", 
+        "assets/email_sent_blue.png", 
+        "assets/email_sent_red.png",
+        "assets/elden_ring_sound.mp3", 
+        "assets/Matinia.otf"
+      ],
       "matches": [
         "https://mail.google.com/*",
         "https://outlook.office.com/*",
         "https://outlook.live.com/*",
         "https://outlook.office365.com/*",
+        "https://outlook.cloud.microsoft/*",
         "https://mail.proton.me/*",
         "https://mail.aol.com/*"
       ]
     }
   ]
 }
-
