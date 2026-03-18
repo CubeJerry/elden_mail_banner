@@ -15,20 +15,19 @@ let bannerColor = "yellow";
 
 // load preferences without rewriting saved preferences 
 const loadPrefs = async () => {
-  if (storage.get.length === 1) {
-    // Chrome callback
-    storage.sync.get(["soundEnabled", "bannerColor"], (res) => {
-      soundEnabled = res.soundEnabled !== undefined ? res.soundEnabled : true;
-      bannerColor = res.bannerColor || "yellow";
-    });
-  } else {
-    // Firefox promise
+  try {
+    // Standardizing on the Promise-based approach
+    // chrome.storage.sync.get returns a promise in modern Chrome (Manifest v3)
     const res = await storage.sync.get(["soundEnabled", "bannerColor"]);
+    
+    // If the browser uses callbacks (older Chrome), 'res' might be undefined 
+    // and we'd need to handle that, but 'await' works for both in modern envs.
     soundEnabled = res.soundEnabled !== undefined ? res.soundEnabled : true;
     bannerColor = res.bannerColor || "yellow";
+  } catch (err) {
+    console.error("Elden Mail: Error loading prefs", err);
   }
 };
-loadPrefs();
 
 // real-time updates
 if (storage.onChanged) {
