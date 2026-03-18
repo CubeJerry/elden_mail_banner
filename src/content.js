@@ -4,7 +4,7 @@ console.log("Elden Mail Banner content.js loaded!");
 const storage = (typeof browser !== "undefined") ? browser.storage : chrome.storage;
 
 // pre-load sound file
-const soundUrl = chrome.runtime.getURL("assets/elden_ring_sound.mp3");
+const soundUrl = chrome.runtime.getURL("src/assets/elden_ring_sound.mp3");
 
 // keywords for "Send" in various languages
 const keywords = ["Invia","Send","傳送","发送","送信","보내기","Enviar","Senden","Envoyer","Отправить","إرسال","ส่ง","Skicka","Sendt", "Gửi", "Надіслати", "Odeslán", "Wyślij", "Gönder", "Lähetä"];
@@ -16,18 +16,16 @@ let bannerColor = "yellow";
 // load preferences without rewriting saved preferences 
 const loadPrefs = async () => {
   try {
-    // Standardizing on the Promise-based approach
-    // chrome.storage.sync.get returns a promise in modern Chrome (Manifest v3)
     const res = await storage.sync.get(["soundEnabled", "bannerColor"]);
-    
-    // If the browser uses callbacks (older Chrome), 'res' might be undefined 
-    // and we'd need to handle that, but 'await' works for both in modern envs.
     soundEnabled = res.soundEnabled !== undefined ? res.soundEnabled : true;
     bannerColor = res.bannerColor || "yellow";
   } catch (err) {
     console.error("Elden Mail: Error loading prefs", err);
   }
 };
+
+// invoke loadPrefs on startup
+loadPrefs();
 
 // real-time updates
 if (storage.onChanged) {
@@ -40,7 +38,7 @@ if (storage.onChanged) {
 function showEldenRingBanner() {
   const banner = document.createElement('div');
   banner.id = 'elden-ring-banner';
-  const imgPath = chrome.runtime.getURL(`assets/email_sent_${bannerColor}.png`);
+  const imgPath = chrome.runtime.getURL(`src/assets/email_sent_${bannerColor}.png`);
   banner.innerHTML = `<img src="${imgPath}" alt="Email Sent">`;
   document.body.appendChild(banner);
 
@@ -126,12 +124,10 @@ outlookLiveObserver.observe(document.body, { childList: true, subtree: true });
 function findProtonButtons(root = document) {
   const buttons = [];
 
-  // search for buttons in the regular DOM
   root.querySelectorAll && root.querySelectorAll('button[data-testid="composer:send-button"]').forEach(btn => {
     buttons.push(btn);
   });
 
-  // look for buttons in any Shadow DOM
   if (root.querySelectorAll) {
     root.querySelectorAll('*').forEach(el => {
       if (el.shadowRoot) {
@@ -159,7 +155,6 @@ const protonMailObserver = new MutationObserver(() => {
 protonMailObserver.observe(document.body, { childList: true, subtree: true });
 
 
-
 // AOL Mail observer
 const aolObserver = new MutationObserver(() => {
   document.querySelectorAll('button[data-test-id="compose-send-button"]').forEach(btn => {
@@ -178,7 +173,6 @@ aolObserver.observe(document.body, { childList: true, subtree: true });
 
 // Keyboard shortcut listener: Cmd+Enter (Mac) or Ctrl+Enter (Windows/Linux)
 document.addEventListener('keydown', (e) => {
-  // Check if Cmd+Enter (Mac) or Ctrl+Enter (Windows/Linux) is pressed
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
     console.log("Send shortcut detected (Cmd/Ctrl+Enter)");
     setTimeout(showEldenRingBanner, 500);
