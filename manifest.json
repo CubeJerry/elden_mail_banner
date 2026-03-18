@@ -5,9 +5,9 @@
   "description": "Shows an Elden Ring banner when you send an email",
   "permissions": ["storage"],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "src/popup.html",
     "default_icon": {
-      "48": "assets/icon.png"
+      "48": "src/assets/icon.png"
     }
   },
   "host_permissions": [
@@ -30,22 +30,22 @@
         "https://mail.proton.me/*",
         "https://mail.aol.com/*"
       ],
-      "js": ["content.js"],
-      "css": ["style.css"],
+      "js": ["src/content.js"],
+      "css": ["src/style.css"],
       "all_frames": true
     }
   ],
   "icons": {
-    "48": "assets/icon.png"
+    "48": "src/assets/icon.png"
   },
   "web_accessible_resources": [
     {
       "resources": [
-        "assets/email_sent_yellow.png", 
-        "assets/email_sent_blue.png", 
-        "assets/email_sent_red.png",
-        "assets/elden_ring_sound.mp3", 
-        "assets/Matinia.otf"
+        "src/assets/email_sent_yellow.png", 
+        "src/assets/email_sent_blue.png", 
+        "src/assets/email_sent_red.png",
+        "src/assets/elden_ring_sound.mp3", 
+        "src/assets/Matinia.otf"
       ],
       "matches": [
         "https://mail.google.com/*",
